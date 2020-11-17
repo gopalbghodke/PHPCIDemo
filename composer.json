@@ -1,0 +1,76 @@
+{
+    "name": "brunoocto/sample",
+    "time": "2020-10-07",
+    "version": "1.0.23",
+    "description": "Sample",
+    "license": "Apache License",
+    "authors": [
+        {
+            "name": "Bruno Martin",
+            "email": "brunoocto@gmail.com"
+        }
+    ],
+    "require": {
+        "brunoocto/exception": "~1.0",
+        "brunoocto/vmodel": "~1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.4",
+        "phpunit/phpunit": "^8.4",
+        "mikey179/vfsstream": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Brunoocto\\Sample\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brunoocto\\Sample\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Brunoocto\\Sample\\Providers\\SampleServiceProvider"
+            ],
+            "aliases": {
+                "SampleAlias": "Brunoocto\\Sample\\Facades\\SampleFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/*/*/",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../*/",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.com:brunoocto/exception.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.com:brunoocto/filesystem.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.com:brunoocto/vmodel.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.com:brunoocto/json.git"
+        }
+    ]
+}
