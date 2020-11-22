@@ -69,42 +69,42 @@ class Users extends VmodelModel
 
     /**
      * Default CRUD restriction per model class
-     * 1:  R
-     * 2: CR
-     * 3: CRU
-     * 4: CRUD (default)
+     * 0100:  R
+     * 1100: CR
+     * 1110: CRU
+     * 1111: CRUD (default)
      *
      *  @var array
      */
-    protected $crud = 2;
+    protected $crud = '1100';
 
     /**
      * Default CRUD restriction per model class for the owner
-     * 1:  R
-     * 2: CR
-     * 3: CRU
-     * 4: CRUD (default)
+     * 0100:  R
+     * 1100: CR
+     * 1110: CRU
+     * 1111: CRUD (default)
      *
      *  @var array
      */
-    protected $crud_owner = 3;
+    protected $crud_owner = '1111';
 
     /**
-     * Get the item CRUD limitation for the current user
+     * Get the binary item CRUD for the current user
      *
-     * @return integer CRUD limitation
+     * @return string CRUD
      */
-    public function getCRUDLimit()
+    public function getCRUD()
     {
         // Get User ID
         $user_id = $this->getAuthUserId();
 
         // For the user itself, created_by is replaced by id
-        if ($this->id == $user_id && $this->crud_owner >= $this->crud) {
+        if ($this->id == $user_id) {
             return $this->crud_owner;
         }
 
-        return parent::getCRUDLimit();
+        return parent::getCRUD();
     }
 
     /**

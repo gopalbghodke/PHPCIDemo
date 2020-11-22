@@ -117,25 +117,25 @@ class Comments extends VmodelModel
 
     /**
      * Default CRUD restriction per model class
-     * 1:  R
-     * 2: CR
-     * 3: CRU
-     * 4: CRUD (default)
+     * 0100:  R
+     * 1100: CR
+     * 1110: CRU
+     * 1111: CRUD (default)
      *
      *  @var array
      */
-    protected $crud = 2;
+    protected $crud = '1100';
 
     /**
      * Default CRUD restriction per model class for the owner
-     * 1:  R
-     * 2: CR
-     * 3: CRU
-     * 4: CRUD (default)
+     * 0100:  R
+     * 1100: CR
+     * 1110: CRU
+     * 1111: CRUD (default)
      *
      *  @var array
      */
-    protected $crud_owner = 2;
+    protected $crud_owner = '1100';
 
 
     /* -------- Start - Relationships UP -------- */
