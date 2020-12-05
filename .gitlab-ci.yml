@@ -5,9 +5,45 @@ stages:
   - test
   - report
   - tag
+  - tags
+
+# Run PHPunit and generate report for tags
+ut_tags:
+  stage: tags
+  tags:
+    - docker
+  cache:
+    paths:
+      - vendor/
+  before_script:
+    # PHPunit
+    - cd /tmp
+    - wget https://phar.phpunit.de/phpunit-8.phar -O phpunit
+    - mv ./phpunit /usr/bin
+    - chmod a+x /usr/bin/phpunit
+    # Composer
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    # SSH login
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 400 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - if [[ -e /.dockerenv ]]; then echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config; fi;
+    # Copy PHP configuration (for test only)
+    - echo "$TEST_INI" > /usr/local/etc/php/conf.d/test.ini
+  script:
+    - cd $CI_PROJECT_DIR
+    # Avoid an error because the folder does not exists
+    - mkdir ./packages
+    - composer install
+    - phpunit --coverage-text --colors=never --configuration phpunit.xml
+  only:
+    - tags
 
 # Run PHPunit and generate report
-unit_test:
+ut_branches:
   stage: test
   tags:
     - docker
@@ -44,7 +80,7 @@ unit_test:
     paths:
       - reports
   only:
-    - master
+    - branches
 
 # Publish report on "pages" feature of Gitlab
 pages:
@@ -52,7 +88,7 @@ pages:
   tags:
     - docker
   dependencies:
-    - unit_test
+    - ut_branches
   script:
     - mv reports/ public/
   artifacts:
@@ -60,7 +96,7 @@ pages:
       - public
     expire_in: 4 weeks
   only:
-    - master
+    - branches
 
 # Generate a new tag syncrhonized with comnposer.json information
 tag_creation:
@@ -68,7 +104,7 @@ tag_creation:
   tags:
     - docker
   dependencies:
-    - unit_test
+    - ut_branches
   script:
     # SSH login
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
@@ -102,4 +138,4 @@ tag_creation:
         git push origin ${tag_version};
       fi;
   only:
-    - master
+    - branches
