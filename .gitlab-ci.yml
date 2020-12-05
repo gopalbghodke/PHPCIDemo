@@ -43,6 +43,8 @@ unit_test:
     expire_in: 1 days
     paths:
       - reports
+  only:
+    - master
 
 # Publish report on "pages" feature of Gitlab
 pages:
