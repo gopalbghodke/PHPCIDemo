@@ -1,4 +1,4 @@
-image: brunoocto/lincko_php:latest
+image: brunoocto/lincko_back:latest
 
 # Jobs to be taken into account by the CI
 stages:
@@ -16,13 +16,6 @@ ut_tags:
     paths:
       - vendor/
   before_script:
-    # PHPunit
-    - cd /tmp
-    - wget https://phar.phpunit.de/phpunit-8.phar -O phpunit
-    - mv ./phpunit /usr/bin
-    - chmod a+x /usr/bin/phpunit
-    # Composer
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     # SSH login
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - mkdir -p ~/.ssh
@@ -32,13 +25,14 @@ ut_tags:
     - ssh-add ~/.ssh/id_rsa
     - if [[ -e /.dockerenv ]]; then echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config; fi;
     # Copy PHP configuration (for test only)
-    - echo "$TEST_INI" > /usr/local/etc/php/conf.d/test.ini
+    - echo "$TEST_INI" > /etc/php/7.3/apache2/conf.d/50-test.ini
+    - echo "$TEST_INI" > /etc/php/7.3/cli/conf.d/50-test.ini
   script:
     - cd $CI_PROJECT_DIR
     # Avoid an error because the folder does not exists
     - mkdir ./packages
     - composer install
-    - phpunit --coverage-text --colors=never --configuration phpunit.xml
+    - phpunit8 --coverage-text --colors=never --configuration phpunit.xml
   only:
     - tags
 
@@ -51,13 +45,6 @@ ut_branches:
     paths:
       - vendor/
   before_script:
-    # PHPunit
-    - cd /tmp
-    - wget https://phar.phpunit.de/phpunit-8.phar -O phpunit
-    - mv ./phpunit /usr/bin
-    - chmod a+x /usr/bin/phpunit
-    # Composer
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     # SSH login
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - mkdir -p ~/.ssh
@@ -67,13 +54,14 @@ ut_branches:
     - ssh-add ~/.ssh/id_rsa
     - if [[ -e /.dockerenv ]]; then echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config; fi;
     # Copy PHP configuration (for test only)
-    - echo "$TEST_INI" > /usr/local/etc/php/conf.d/test.ini
+    - echo "$TEST_INI" > /etc/php/7.3/apache2/conf.d/50-test.ini
+    - echo "$TEST_INI" > /etc/php/7.3/cli/conf.d/50-test.ini
   script:
     - cd $CI_PROJECT_DIR
     # Avoid an error because the folder does not exists
     - mkdir ./packages
     - composer install
-    - phpunit --coverage-text --colors=never --configuration phpunit.xml
+    - phpunit8 --coverage-text --colors=never --configuration phpunit.xml
   artifacts:
     when: always
     expire_in: 1 days
