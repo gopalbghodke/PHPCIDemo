@@ -102,6 +102,9 @@ tag_creation:
     - chmod 400 ~/.ssh/id_rsa
     - ssh-add ~/.ssh/id_rsa
     - if [[ -e /.dockerenv ]]; then echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config; fi
+    # Set account
+    - git config --global user.email "brunoocto@gmail.com"
+    - git config --global user.name "Bruno Martin"
     # Enable git remote operation
     - git remote set-url origin git@gitlab.com:${CI_PROJECT_PATH}.git
     # Grab and push version number
