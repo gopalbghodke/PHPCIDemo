@@ -1,7 +1,7 @@
 {
     "name": "brunoocto/sample",
-    "time": "2020-11-22",
-    "version": "1.0.1",
+    "time": "2020-12-05",
+    "version": "3.0.2",
     "description": "Sample",
     "license": "Apache License",
     "authors": [
@@ -11,12 +11,13 @@
         }
     ],
     "require": {
-        "brunoocto/exception": "~1.0",
-        "brunoocto/vmodel": "~1.0"
+        "brunoocto/exception": "~3.0",
+        "brunoocto/vmodel": "~3.0",
+        "laravel/legacy-factories": "^1.1"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.4",
-        "phpunit/phpunit": "^8.4",
+        "orchestra/testbench": "^6.5",
+        "phpunit/phpunit": "^9.3.3",
         "mikey179/vfsstream": "^1.6"
     },
     "autoload": {
@@ -44,13 +45,6 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./packages/*/*/",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
             "url": "../*/",
             "options": {
                 "symlink": true
@@ -71,6 +65,10 @@
         {
             "type": "vcs",
             "url": "git@gitlab.com:brunoocto/json.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.com:brunoocto/exceptionhandler.git"
         }
     ]
 }

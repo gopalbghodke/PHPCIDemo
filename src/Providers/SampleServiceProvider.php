@@ -23,7 +23,7 @@ class SampleServiceProvider extends ServiceProvider
     public function register()
     {
         // Load environment variables specific to the library (default is .env)
-        $dotenv = Dotenv::create(__DIR__.'/../../');
+        $dotenv = Dotenv::createMutable(__DIR__.'/../../');
         $dotenv->load();
 
         // Add SQLite database by merging configuration file
